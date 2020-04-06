@@ -36,7 +36,7 @@ public class Handler {
 	}
 	
 	//Handle removing objects from our list GameObject
-	public void moveObject(GameObject object) {
+	public void removeObject(GameObject object) {
 		this.object.remove(object);
 	}
 	

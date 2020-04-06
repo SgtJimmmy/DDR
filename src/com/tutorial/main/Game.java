@@ -23,18 +23,25 @@ public class Game extends Canvas implements Runnable {
 	
 	private Random r;
 	private Handler handler;
+	private HUD hud;
 	
 	public Game() { // "this" refers to the game parameter
-		new Window(WIDTH, HEIGHT, "It's Gaming Time", this);
 		
 		handler = new Handler();
+		this.addKeyListener(new KeyInput(handler));
+		
+		new Window(WIDTH, HEIGHT, "It's Gaming Time", this);
+		
+		hud = new HUD();
+		
 		r = new Random();
 		
 		//give Player x, y, and id - each one is an individual object in the game
-		for(int i = 0; i < 50; i++) {
-			handler.addObject(new Player(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Player));
-		}
-
+		
+			handler.addObject(new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player, handler));
+			for(int i = 0; i < 3; i++) {
+				handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.BasicEnemy, handler));
+			}
 	}
 
 	public synchronized void start() { // "this" refers to this file, this "Game" class
@@ -58,6 +65,7 @@ public class Game extends Canvas implements Runnable {
 	//Game Loop - Necessary for the game to run, without it it cannot update itself
 	//Every game has a version of the game loop
 	public void run() {
+		this.requestFocus();
 		//Popular game loop - recommended
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
@@ -88,6 +96,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick() {
 		handler.tick();
+		hud.tick();
 	}
 	
 	private void render() {
@@ -104,8 +113,20 @@ public class Game extends Canvas implements Runnable {
 		
 		handler.render(g);
 		
+		hud.render(g);
+		
 		g.dispose();
 		bs.show();
+	}
+	
+	public static int clamp(int var, int min, int max) {
+		if(var >= max) {
+			return var = max;
+		}
+		else if(var <= min) {
+			return var = min;
+		}
+		else return var;
 	}
 
 	public static void main(String[] args) {

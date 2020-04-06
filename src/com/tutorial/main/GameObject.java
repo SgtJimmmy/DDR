@@ -1,6 +1,7 @@
 package com.tutorial.main;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 //This holds all of the game objects
 public abstract class GameObject {
@@ -22,6 +23,7 @@ public abstract class GameObject {
 	//Used within our other classes (Player, Enemy, Coins, etc.)
 	public abstract void tick();
 	public abstract void render(Graphics g);
+	public abstract Rectangle getBounds();
 	
 	//Gets a value then sets the value inside the code
 	public void setX(int x) {
